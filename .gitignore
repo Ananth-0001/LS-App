@@ -1,0 +1,14 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore env/config files
+.env
+.env.txt
+
+# Ignore batch files (optional)
+*.bat
+*.bat.txt
+
+# Temporary files
+temp.pdf
