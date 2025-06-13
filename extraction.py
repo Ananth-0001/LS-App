@@ -1,47 +1,41 @@
 import camelot
+import json
+import os
+
+# Load keyword mappings from JSON
+
+
+def load_keyword_mapping():
+    file_path = os.path.join(os.path.dirname(__file__), 'keyword_mapping.json')
+    with open(file_path, 'r') as f:
+        return json.load(f)
+
+
+keyword_mapping = load_keyword_mapping()
+
 
 def extract_tables(file_path):
-    tables = camelot.read_pdf(file_path, pages='1-end', flavor='stream')
+    tables = camelot.read_pdf(file_path, pages='all', flavor='stream')
     return tables
 
+
 def parse_financial_data(tables):
-    data = {
-        'Revenue': None,
-        'Net Income': None,
-        'Total Assets': None,
-        'Total Liabilities': None,
-        'Current Assets': None,
-        'Current Liabilities': None,
-        'Operating Cash Flow': None
-    }
+    data = {key: None for key in keyword_mapping.keys()}
 
     for table in tables:
         df = table.df
         for row in df.values:
             row_text = " ".join(row).lower()
 
-            if "revenue" in row_text and data['Revenue'] is None:
-                data['Revenue'] = extract_number(row)
-
-            if ("net income" in row_text or "profit after tax" in row_text) and data['Net Income'] is None:
-                data['Net Income'] = extract_number(row)
-
-            if "total assets" in row_text and data['Total Assets'] is None:
-                data['Total Assets'] = extract_number(row)
-
-            if "total liabilities" in row_text and data['Total Liabilities'] is None:
-                data['Total Liabilities'] = extract_number(row)
-
-            if "current assets" in row_text and data['Current Assets'] is None:
-                data['Current Assets'] = extract_number(row)
-
-            if "current liabilities" in row_text and data['Current Liabilities'] is None:
-                data['Current Liabilities'] = extract_number(row)
-
-            if "operating cash flow" in row_text and data['Operating Cash Flow'] is None:
-                data['Operating Cash Flow'] = extract_number(row)
+            for key, keywords in keyword_mapping.items():
+                if data[key] is None:
+                    for word in keywords:
+                        if word in row_text:
+                            data[key] = extract_number(row)
+                            break
 
     return data
+
 
 def extract_number(row):
     for item in row:

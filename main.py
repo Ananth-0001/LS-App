@@ -5,14 +5,21 @@ from extraction import extract_tables, parse_financial_data
 from calculations import calculate_ratios
 from decision_engine import evaluate_loan_eligibility
 
+# Streamlit page config
 st.set_page_config(page_title="Loan Eligibility App", layout="centered")
 st.title(" Loan Eligibility Assessment Tool")
 
 st.write("Please upload all 3 financial statements (in PDF format):")
 
-pnl_file = st.file_uploader("Profit & Loss Statement", type=["pdf"])
-balance_file = st.file_uploader("Balance Sheet", type=["pdf"])
-cashflow_file = st.file_uploader("Cash Flow Statement", type=["pdf"])
+# Uploaders with larger titles
+st.markdown("<h3>Profit & Loss Statement</h3>", unsafe_allow_html=True)
+pnl_file = st.file_uploader("", type=["pdf"], key="pnl_file")
+
+st.markdown("<h3>Balance Sheet</h3>", unsafe_allow_html=True)
+balance_file = st.file_uploader("", type=["pdf"], key="balance_file")
+
+st.markdown("<h3>Cash Flow Statement</h3>", unsafe_allow_html=True)
+cashflow_file = st.file_uploader("", type=["pdf"], key="cashflow_file")
 
 if pnl_file and balance_file and cashflow_file:
 
@@ -48,13 +55,13 @@ if pnl_file and balance_file and cashflow_file:
         'Operating Cash Flow': cashflow_data.get('Operating Cash Flow')
     }
 
+    # Display extracted data
     st.subheader("📄 Extracted Financial Data")
     st.write(pd.DataFrame(combined_data.items(), columns=["Item", "Value"]))
 
     # Calculate ratios
     ratios = calculate_ratios(combined_data)
 
-    # Display ratios cleanly
     st.subheader("📈 Financial Ratios")
     ratio_df = pd.DataFrame(
         [(key, f"{value:.2f}" if value is not None else "N/A")
@@ -63,7 +70,7 @@ if pnl_file and balance_file and cashflow_file:
     )
     st.table(ratio_df)
 
-    # Loan decision
+    # Evaluate loan eligibility (✅ this was missing earlier!)
     decision, reasons = evaluate_loan_eligibility(ratios)
 
     st.subheader("💳 Loan Eligibility Decision")

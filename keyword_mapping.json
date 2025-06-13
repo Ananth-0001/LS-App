@@ -1,0 +1,46 @@
+{
+  "Revenue": [
+    "revenue from operations",
+    "total revenue",
+    "revenue",
+    "sales"
+  ],
+  "Other Income": [
+    "other income",
+    "miscellaneous income"
+  ],
+  "Net Income": [
+    "net income",
+    "profit after tax",
+    "profit for the period",
+    "profit over time",
+    "profit over period",
+    "profit after taxation",
+    "profit for the year",
+    "net profit"
+  ],
+  "Total Assets": [
+    "total assets",
+    "assets total",
+    "total of assets",
+    "total - assets",
+    "total equity and assets"
+  ],
+  "Total Liabilities": [
+    "total liabilities",
+    "liabilities total",
+    "total equity and liabilities",
+    "total - liabilities"
+  ],
+  "Current Assets": [
+    "current assets"
+  ],
+  "Current Liabilities": [
+    "current liabilities"
+  ],
+  "Operating Cash Flow": [
+    "operating cash flow",
+    "net cash from operating activities",
+    "cash flow from operating activities"
+  ]
+}
